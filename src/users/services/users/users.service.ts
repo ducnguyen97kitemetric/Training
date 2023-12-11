@@ -1,26 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/utils/types';
+import { User, UserType } from 'src/types/user';
+import { LoginUserDto } from 'src/users/dtos/LoginUser.dto';
+import { RegisterUserDto } from 'src/users/dtos/RegisterUser.dto';
 
 @Injectable()
 export class UsersService {
   private fakeUsers: User[] = [{
-    userName: 'Andy',
+    id: 1,
+    fullName: 'Andy',
     email: 'andy@gmail.com',
-    posts: [{
-      id: 1,
-      title: 'Post 1'
-    }, {
-      id: 2,
-      title: 'Post 2'
-    }]
+    userType: UserType.admin,
+    password: "123",
   }, {
-    userName: 'Bob',
+    id: 2,
+    fullName: 'Bob',
     email: 'bob@gmail.com',
-    posts: []
+    userType: UserType.basic,
+    password: "123",
   }, {
-    userName: 'Luke',
+    id: 3,
+    fullName: 'Luke',
     email: 'luke@gmail.com',
-    posts: []
+    userType: UserType.basic,
+    password: "123",
   }]
 
 
@@ -28,8 +30,24 @@ export class UsersService {
     return this.fakeUsers;
   }
 
-  createUser(userData: User) {
-    this.fakeUsers.push(userData);
+  registerUser(userData: RegisterUserDto) {
+    const maxId = this.fakeUsers.reduce((acc, user) => {
+      if (user.id > acc) acc = user.id;
+      return acc;
+    }, 0);
+    this.fakeUsers.push({
+      ...userData,
+      userType: UserType.basic,
+      id: maxId + 1,
+    });
+  }
+
+  loginUser(loginData: LoginUserDto) {
+    return this.fakeUsers.find(user => (
+      user.email === loginData.email && user.password === loginData.password
+    ));
+
+    
   }
 
   fetchUserByEmail(email: string) {
