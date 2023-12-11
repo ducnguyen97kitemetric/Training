@@ -12,8 +12,6 @@ export class LoginController {
   @Post()
   @UsePipes(new ValidationPipe())
   login(@Body(ValidateLoginUserPipe) loginData: LoginUserDto) {
-    console.log('in login controller');
-    
     const user = this.userService.loginUser(loginData);
 
     if (!user) {
