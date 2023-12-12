@@ -11,7 +11,7 @@ export class UsersController {
   }
 
   @Get()
-  getUsers(@Query('sortBy') sortBy: string, @Query('sortDesc', ParseBoolPipe) sortDesc: boolean) {
+  getUsers() {
     return this.userService.fetchUsers();
   }
 }

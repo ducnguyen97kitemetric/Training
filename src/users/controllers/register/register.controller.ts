@@ -12,8 +12,6 @@ export class RegisterController {
   @Post()
   @UsePipes(new ValidationPipe())
   register(@Body(ValidateRegisterUserPipe) userData: RegisterUserDto) {
-    this.userService.registerUser(userData);
-
-    return this.userService.fetchUserByEmail(userData.email);
+    return this.userService.registerUser(userData);
   }  
 }

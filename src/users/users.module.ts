@@ -5,8 +5,11 @@ import { ExampleMiddleware } from './middlewares/example/example.middleware';
 import { AnotherMiddleware } from './middlewares/another/another.middleware';
 import { RegisterController } from './controllers/register/register.controller';
 import { LoginController } from './controllers/login/login.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'src/models/user.entity';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([User])],
   controllers: [UsersController, RegisterController, LoginController],
   providers: [UsersService]
 })

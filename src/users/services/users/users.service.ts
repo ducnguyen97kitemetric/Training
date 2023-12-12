@@ -1,56 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { User, UserType } from 'src/types/user';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/models/user.entity';
+import { UserType } from 'src/types/user';
 import { LoginUserDto } from 'src/users/dtos/LoginUser.dto';
 import { RegisterUserDto } from 'src/users/dtos/RegisterUser.dto';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  private fakeUsers: User[] = [{
-    id: 1,
-    fullName: 'Andy',
-    email: 'andy@gmail.com',
-    userType: UserType.admin,
-    password: "123",
-  }, {
-    id: 2,
-    fullName: 'Bob',
-    email: 'bob@gmail.com',
-    userType: UserType.basic,
-    password: "123",
-  }, {
-    id: 3,
-    fullName: 'Luke',
-    email: 'luke@gmail.com',
-    userType: UserType.basic,
-    password: "123",
-  }]
-
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+  ) {}
 
   fetchUsers() {
-    return this.fakeUsers;
+    return this.usersRepository.createQueryBuilder('user').select([
+      'user.id',
+      'user.email',
+      'user.fullName',
+      'user.userType',
+      'user.createdAt',
+      'user.updatedAt',
+    ]).getMany();
   }
 
   registerUser(userData: RegisterUserDto) {
-    const maxId = this.fakeUsers.reduce((acc, user) => {
-      if (user.id > acc) acc = user.id;
-      return acc;
-    }, 0);
-    this.fakeUsers.push({
-      ...userData,
+    const newUser = this.usersRepository.create({
+      email: userData.email,
+      fullName: userData.fullName,
+      password: userData.password,
       userType: UserType.basic,
-      id: maxId + 1,
-    });
+    })
+
+    return this.usersRepository.insert(newUser);
   }
 
   loginUser(loginData: LoginUserDto) {
-    return this.fakeUsers.find(user => (
-      user.email === loginData.email && user.password === loginData.password
-    ));
-
-    
-  }
-
-  fetchUserByEmail(email: string) {
-    return this.fakeUsers.find((user) => user.email === email);
+    return this.usersRepository.findOneBy({ email: loginData.email, password: loginData.password });
   }
 }
