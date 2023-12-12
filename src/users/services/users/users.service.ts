@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/models/user.entity';
-import { UserType } from 'src/types/user';
 import { LoginUserDto } from 'src/users/dtos/LoginUser.dto';
 import { RegisterUserDto } from 'src/users/dtos/RegisterUser.dto';
+import { UpdateUserDto } from 'src/users/dtos/UpdateUser.dto';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -46,6 +46,16 @@ export class UsersService {
     return this.usersRepository
       .createQueryBuilder('user')
       .where({ email: loginData.email, password: loginData.password })
+      .select(this.visibleFields).getOne();
+  }
+
+  async updateUser(userId: number, userData: UpdateUserDto) {
+    const updatedResult = await this.usersRepository.update(userId, userData);
+    if (updatedResult.affected == 0) return null;
+
+    return this.usersRepository
+      .createQueryBuilder('user')
+      .where({ id: userId })
       .select(this.visibleFields).getOne();
   }
 }
