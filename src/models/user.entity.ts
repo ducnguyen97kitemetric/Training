@@ -23,8 +23,7 @@ export class User {
   password: string;
 
   @Column({
-    type: 'enum',
-    enum: UserType,
+    type: 'int',
     nullable: false,
     default: UserType.basic
   })
