@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { LoginUserDto } from 'src/users/dtos/LoginUser.dto';
 import { ValidateLoginUserPipe } from 'src/users/pipes/validate-login-user/validate-login-user.pipe';
 import { UsersService } from 'src/users/services/users/users.service';
@@ -10,7 +10,6 @@ export class LoginController {
   }
 
   @Post()
-  @UsePipes(new ValidationPipe())
   async login(@Body(ValidateLoginUserPipe) loginData: LoginUserDto) {
     const user = await this.userService.loginUser(loginData);
 
