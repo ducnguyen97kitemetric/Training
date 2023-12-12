@@ -7,7 +7,7 @@ export const AppDataSource = new DataSource({
   username: 'mac',
   password: '',
   database: 'chatapp',
-  schema: "my-schema",
+  synchronize: false,
   migrationsRun: false,
   entities: [`${__dirname}/**/**.entity{.ts,.js}`],
   migrations: [`${__dirname}/migrations/*{.ts,.js}`],
