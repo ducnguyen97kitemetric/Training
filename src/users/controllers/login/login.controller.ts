@@ -11,8 +11,8 @@ export class LoginController {
 
   @Post()
   @UsePipes(new ValidationPipe())
-  login(@Body(ValidateLoginUserPipe) loginData: LoginUserDto) {
-    const user = this.userService.loginUser(loginData);
+  async login(@Body(ValidateLoginUserPipe) loginData: LoginUserDto) {
+    const user = await this.userService.loginUser(loginData);
 
     if (!user) {
       throw new HttpException("login failed", HttpStatus.UNAUTHORIZED);
