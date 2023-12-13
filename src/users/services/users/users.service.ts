@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LoginUserDto } from 'src/auth/dtos/LoginUser.dto';
-import { RegisterUserDto } from 'src/auth/dtos/RegisterUser.dto';
+import { RegisterDto } from 'src/auth/dtos/Register.dto';
 import { User } from 'src/models/user.entity';
 import { UpdateUserDto } from 'src/users/dtos/UpdateUser.dto';
-import { Repository } from 'typeorm';
+import { ObjectLiteral, Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -23,10 +22,10 @@ export class UsersService {
   ]
 
   fetchUsers() {
-    return this.usersRepository.createQueryBuilder('user').select(this.visibleFields).getMany();
+    return this.usersRepository.createQueryBuilder('user').select(this.visibleFields).orderBy('id').getMany();
   }
 
-  async createUser(userData: RegisterUserDto) {
+  async createUser(userData: RegisterDto) {
     const newUser = this.usersRepository.create({
       email: userData.email,
       fullName: userData.fullName,
@@ -42,7 +41,7 @@ export class UsersService {
     }
   }
 
-  findUser(clause: any) {
+  findUser(clause: ObjectLiteral) {
     return this.usersRepository
       .createQueryBuilder('user')
       .where(clause)

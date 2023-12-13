@@ -1,4 +1,5 @@
- import { Body, Controller, Get, HttpException, HttpStatus, Param, ParseIntPipe, Patch } from '@nestjs/common';
+ import { Body, Controller, Get, HttpException, HttpStatus, Param, ParseIntPipe, Patch, UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/guards/auth/auth.guard';
 import { UpdateUserDto } from 'src/users/dtos/UpdateUser.dto';
 import { ValidateUpdateUserPipe } from 'src/users/pipes/validate-update-user/validate-update-user.pipe';
 import { UsersService } from 'src/users/services/users/users.service';
@@ -10,6 +11,7 @@ export class UsersController {
 
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   getUsers() {
     return this.usersService.fetchUsers();
