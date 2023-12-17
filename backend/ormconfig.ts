@@ -1,5 +1,10 @@
+import { ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
- 
+
+
+const configService = new ConfigService();
+console.log('env', configService?.get<string>('JWT_SECRET'));
+
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: 'localhost',
