@@ -6,7 +6,6 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/guards/auth/auth.guard';
 import { ConfigModule } from '@nestjs/config';
-import { GlobalJwtModule } from './auth/global-jwt.module';
 
 @Module({
   imports: [
@@ -16,7 +15,6 @@ import { GlobalJwtModule } from './auth/global-jwt.module';
     ConfigModule.forRoot({
       isGlobal: true
     }),
-    GlobalJwtModule
   ],
   controllers: [],
   providers: [
