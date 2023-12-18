@@ -77,6 +77,12 @@ declare namespace API {
     success?: boolean;
   };
 
+    
+  export type ApiErrorResponse = {
+    statusCode?: number;
+    message?: string;
+  }
+
   type NoticeIconList = {
     data?: NoticeIconItem[];
     /** 列表的内容总数 */
