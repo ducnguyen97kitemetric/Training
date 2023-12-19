@@ -99,37 +99,27 @@ const Login: React.FC = () => {
   const { styles } = useStyles();
   const intl = useIntl();
 
-  const fetchUserInfo = async () => {
-    const userInfo = await initialState?.fetchUserInfo?.();
-    if (userInfo) {
-      flushSync(() => {
-        setInitialState((s) => ({
-          ...s,
-          currentUser: userInfo,
-        }));
-      });
-    }
-  };
-
   const handleSubmit = async (values: API.LoginParams) => {
     try {
       const submitMethod = type === 'login' ? login : register;
       const msg = await submitMethod(values);
-      console.log('msg', msg);
 
-      if (msg.status === 'ok') {
-        const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'pages.login.success',
-          defaultMessage: '登录成功！',
-        });
-        message.success(defaultLoginSuccessMessage);
-        const urlParams = new URL(window.location.href).searchParams;
-        history.push(urlParams.get('redirect') || '/');
-        return;
-      }
-      console.log(msg);
-      // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      const defaultLoginSuccessMessage = intl.formatMessage({
+        id: 'pages.login.success',
+        defaultMessage: '登录成功！',
+      });
+      message.success(defaultLoginSuccessMessage);
+
+      flushSync(() => {
+        setInitialState((s) => ({
+          ...s,
+          currentUser: msg.user,
+          token: msg.token
+        }));
+      });
+
+      history.push('/');
+      return;
     } catch (_error) {
       const error = _error as AxiosError<API.ApiErrorResponse, any>;
       message.error(error.response?.data?.message);
@@ -166,14 +156,6 @@ const Login: React.FC = () => {
           initialValues={{
             autoLogin: true,
           }}
-          actions={[
-            <FormattedMessage
-              key="loginWith"
-              id="pages.login.loginWith"
-              defaultMessage="其他登录方式"
-            />,
-            <ActionIcons key="icons" />,
-          ]}
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams);
           }}

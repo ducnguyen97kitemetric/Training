@@ -99,14 +99,23 @@ declare namespace API {
   };
 
   type User = {
+    /** backend api result */
     id?: number;
+    email?: string;
+    fullName?: string;
+    userType?: UserType;
+    /** ant default attributes */
     username?: string;
     firstName?: string;
     lastName?: string;
-    email?: string;
     password?: string;
     phone?: string;
     /** User Status */
     userStatus?: number;
   };
+
+  enum UserType {
+    admin,
+    basic
+  }
 }
