@@ -20,7 +20,7 @@ export async function outLogin(options?: { [key: string]: any }) {
   });
 }
 
-/** 登录接口 POST /api/login */
+/** POST /api/login */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
   return request<API.LoginResult>('/api/login', {
     method: 'POST',
@@ -32,12 +32,25 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
   });
 }
 
-/** 登录接口 POST /api/register */
+/** POST /api/register */
 export async function register(body: API.LoginParams, options?: { [key: string]: any }) {
   return request<API.LoginResult>('/api/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** PATCH /api/users/:id */
+export async function updateUser(userId: number, body: API.UpdateUserParams, jwtToken: string, options?: { [key: string]: any }) {
+  return request<API.LoginResult>(`/api/users/${userId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwtToken}`
     },
     data: body,
     ...(options || {}),

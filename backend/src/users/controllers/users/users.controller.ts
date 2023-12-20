@@ -30,6 +30,6 @@ export class UsersController {
       throw new HttpException("User not found", HttpStatus.BAD_REQUEST);
     }
 
-    return updatedUser;
+    return { user: updatedUser };
   }
 }

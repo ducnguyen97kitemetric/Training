@@ -15,7 +15,7 @@ const loginPath = '/login';
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.User;
+  currentUser?: API.UserInfo;
   token?: string;
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
@@ -53,8 +53,10 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
     avatarProps: {
       src: initialState?.currentUser?.fullName,
+      alt: initialState?.currentUser?.fullName,
       title: <AvatarName />,
       render: (_, avatarChildren) => {
+        console.log('avatarChildren', avatarChildren)
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
     },

@@ -65,11 +65,13 @@ declare namespace API {
   };
 
   type LoginParams = {
-    username?: string;
-    password?: string;
-    autoLogin?: boolean;
-    type?: string;
+    email: string;
+    password: string;
   };
+
+  type UpdateUserParams = {
+    fullName?: string;
+  }
 
   type ErrorResponse = {
     /** 业务约定的错误码 */

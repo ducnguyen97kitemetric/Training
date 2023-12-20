@@ -98,7 +98,7 @@ declare namespace API {
     petId: number;
   };
 
-  type User = {
+  type UserInfo = {
     /** backend api result */
     id?: number;
     email?: string;
